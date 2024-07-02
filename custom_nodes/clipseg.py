@@ -8,6 +8,7 @@ import numpy as np
 from torchvision.transforms.functional import to_pil_image
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import os
 
 
 import cv2
@@ -115,8 +116,12 @@ class CLIPSeg:
         # Create a PIL image from the numpy array
         i = Image.fromarray(image_np, mode="RGB")
 
-        processor = CLIPSegProcessor.from_pretrained("CIDAS/clipseg-rd64-refined")
-        model = CLIPSegForImageSegmentation.from_pretrained("CIDAS/clipseg-rd64-refined")
+        if os.path.exists('/stable-diffusion-cache/models/clipseg-rd64-refined'):
+            processor = CLIPSegProcessor.from_pretrained('/stable-diffusion-cache/models/clipseg-rd64-refined')
+            model = CLIPSegForImageSegmentation.from_pretrained('/stable-diffusion-cache/models/clipseg-rd64-refined')
+        else:
+            processor = CLIPSegProcessor.from_pretrained("CIDAS/clipseg-rd64-refined")
+            model = CLIPSegForImageSegmentation.from_pretrained("CIDAS/clipseg-rd64-refined")
         
         prompt = text
         
